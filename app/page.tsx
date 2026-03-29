@@ -1,65 +1,130 @@
-import Image from 'next/image';
+'use client';
+
+import { motion } from 'framer-motion';
+import { Activity, TrendingUp, Zap } from 'lucide-react';
+
+import { AppSidebar } from '@/components/app-sidebar';
+import { SiteHeader } from '@/components/site-header';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+
+const stats = [
+  {
+    title: 'Active Users',
+    value: '128',
+    description: '지난 30일 대비',
+    change: '+14.2%',
+    icon: Activity,
+  },
+  {
+    title: 'Total Events',
+    value: '2.4K',
+    description: '이번 달 누적',
+    change: '+20.1%',
+    icon: TrendingUp,
+  },
+  {
+    title: 'Uptime',
+    value: '99.9%',
+    description: '최근 90일 기준',
+    change: 'Stable',
+    icon: Zap,
+  },
+];
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const item = {
+  hidden: { y: 10, opacity: 0 },
+  show: { y: 0, opacity: 1 },
+};
 
 export default function Home() {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-16 py-32 sm:items-start dark:bg-black">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl leading-10 font-semibold tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{' '}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{' '}
-            or the{' '}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{' '}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="bg-foreground text-background flex h-12 w-full items-center justify-center gap-2 rounded-full px-5 transition-colors hover:bg-[#383838] md:w-[158px] dark:hover:bg-[#ccc]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] md:w-[158px] dark:border-white/[.145] dark:hover:bg-[#1a1a1a]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <SiteHeader />
+        <motion.main
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="flex flex-1 flex-col gap-4 p-4 pt-0"
+        >
+          {/* Header Section */}
+          <div className="flex flex-col gap-1 py-4">
+            <h1 className="text-2xl font-bold tracking-tight">대시보드</h1>
+            <p className="text-muted-foreground text-sm">시스템 현황 및 활동 요약</p>
+          </div>
+
+          {/* Responsive Grid */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+            {stats.map((stat) => (
+              <motion.div key={stat.title} variants={item}>
+                <Card className="hover:bg-muted/50 transition-colors">
+                  <CardHeader className="flex flex-row items-center justify-between pb-2">
+                    <CardDescription className="text-xs font-medium tracking-wider uppercase">
+                      {stat.title}
+                    </CardDescription>
+                    <stat.icon className="text-muted-foreground size-4" aria-hidden="true" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{stat.value}</div>
+                    <div className="mt-1 flex items-center gap-2">
+                      <p className="sr-only">상태: {stat.change}</p>
+                      <Badge variant="secondary" className="h-5 px-1.5 text-[10px] font-semibold">
+                        {stat.change}
+                      </Badge>
+                      <span className="text-muted-foreground text-xs">{stat.description}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          <Separator className="my-2" />
+
+          {/* Content area */}
+          <motion.div variants={item}>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-xl">시스템 알림</CardTitle>
+                <CardDescription>최근 업데이트 및 공지사항</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-4">
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      레이아웃이 깔끔한 스타일로 변경되었습니다. 사이드바와 헤더가 유기적으로
+                      작동하며, 모든 기기에서 최적화된 화면을 제공합니다. 다크 모드와 라이트 모드가
+                      시스템 설정에 맞춰 자동으로 전환됩니다.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant="outline">반응형</Badge>
+                      <Badge variant="outline">다크모드 지원</Badge>
+                      <Badge variant="outline">Next.js 16</Badge>
+                    </div>
+                  </div>
+                  <div className="bg-muted/50 flex aspect-video items-center justify-center rounded-lg border border-dashed text-xs">
+                    <span className="text-muted-foreground">데이터 시각화 영역</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </motion.main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
