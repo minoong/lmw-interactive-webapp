@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/minoong/lmw-interactive-webapp/compare/v1.1.0...v1.2.0) (2026-03-29)
+
+
+### Features
+
+* **layout:** 전용 인트로 페이지 및 동적 경로 하이라이팅 구현 ([de3170f](https://github.com/minoong/lmw-interactive-webapp/commit/de3170fb5e05fd5b4932c2fa5ae669da48d6478c))
+
 # [1.1.0](https://github.com/minoong/lmw-interactive-webapp/compare/v1.0.0...v1.1.0) (2026-03-29)
 
 
