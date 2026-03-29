@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/minoong/lmw-interactive-webapp/compare/v1.2.0...v1.3.0) (2026-03-29)
+
+
+### Features
+
+* **home:** GSAP/Framer Motion 기반 패럴렉스 인트로 페이지 구현 ([f2b9666](https://github.com/minoong/lmw-interactive-webapp/commit/f2b9666dc4edfb179448411e4d5a54ce9c54259f))
+
 # [1.2.0](https://github.com/minoong/lmw-interactive-webapp/compare/v1.1.0...v1.2.0) (2026-03-29)
 
 
