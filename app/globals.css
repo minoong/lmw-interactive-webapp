@@ -51,6 +51,10 @@
   --animate-accordion-down: accordion-down 0.3s cubic-bezier(0.87, 0, 0.13, 1);
   --animate-accordion-up: accordion-up 0.3s cubic-bezier(0.87, 0, 0.13, 1);
 
+  /* Galaxy Parallax Animations */
+  --animate-twinkle: twinkle 4s ease-in-out infinite alternate;
+  --animate-flow: flow 40s linear infinite;
+
   @keyframes accordion-down {
     from {
       height: 0;
@@ -69,6 +73,31 @@
     to {
       height: 0;
       opacity: 0;
+    }
+  }
+  @keyframes twinkle {
+    0% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+  }
+  @keyframes flow {
+    0% {
+      transform: translateX(-5%) rotate(-12deg);
+    }
+    50% {
+      transform: translateX(5%) rotate(-12deg);
+    }
+    100% {
+      transform: translateX(-5%) rotate(-12deg);
     }
   }
 }
