@@ -1,5 +1,7 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
+
 import { Folder, Forward, MoreHorizontal, Trash2, type LucideIcon } from 'lucide-react';
 
 import {
@@ -28,6 +30,7 @@ export function NavProjects({
     icon: LucideIcon;
   }[];
 }) {
+  const pathname = usePathname();
   const { isMobile } = useSidebar();
 
   return (
@@ -36,39 +39,13 @@ export function NavProjects({
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild tooltip={item.name}>
+            <SidebarMenuButton asChild tooltip={item.name} isActive={pathname === item.url}>
               <a href={item.url}>
                 <item.icon />
                 <span>{item.name}</span>
               </a>
             </SidebarMenuButton>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuAction showOnHover aria-label={`Options for ${item.name}`}>
-                  <MoreHorizontal aria-hidden="true" />
-                  <span className="sr-only">More</span>
-                </SidebarMenuAction>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-48 rounded-lg"
-                side={isMobile ? 'bottom' : 'right'}
-                align={isMobile ? 'end' : 'start'}
-              >
-                <DropdownMenuItem>
-                  <Folder />
-                  <span>View Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Forward />
-                  <span>Share Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Trash2 />
-                  <span>Delete Project</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <MoreHorizontalAction item={item} isMobile={isMobile} />
           </SidebarMenuItem>
         ))}
         <SidebarMenuItem>
@@ -79,5 +56,37 @@ export function NavProjects({
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
+  );
+}
+
+function MoreHorizontalAction({ item, isMobile }: { item: { name: string }; isMobile: boolean }) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <SidebarMenuAction showOnHover aria-label={`Options for ${item.name}`}>
+          <MoreHorizontal aria-hidden="true" />
+          <span className="sr-only">More</span>
+        </SidebarMenuAction>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        className="w-48 rounded-lg"
+        side={isMobile ? 'bottom' : 'right'}
+        align={isMobile ? 'end' : 'start'}
+      >
+        <DropdownMenuItem>
+          <Folder className="text-muted-foreground" />
+          <span>View Project</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Forward className="text-muted-foreground" />
+          <span>Share Project</span>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <Trash2 className="text-muted-foreground" />
+          <span>Delete Project</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

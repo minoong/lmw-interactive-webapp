@@ -1,5 +1,7 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
+
 import { ChevronRight, type LucideIcon } from 'lucide-react';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -37,6 +39,7 @@ export function NavMain({
     }[];
   }[];
 }) {
+  const pathname = usePathname();
   const { isMobile, state } = useSidebar();
   const isCollapsed = state === 'collapsed' && !isMobile;
 
@@ -45,12 +48,15 @@ export function NavMain({
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
+          const isItemActive =
+            pathname === item.url || item.items?.some((subItem) => pathname === subItem.url);
+
           if (isCollapsed) {
             return (
               <SidebarMenuItem key={item.title}>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <SidebarMenuButton tooltip={item.title}>
+                    <SidebarMenuButton tooltip={item.title} isActive={isItemActive}>
                       {item.icon && <item.icon aria-hidden="true" />}
                       <span>{item.title}</span>
                       <ChevronRight
@@ -72,7 +78,12 @@ export function NavMain({
                       <DropdownMenuSeparator />
                       {item.items.map((subItem) => (
                         <DropdownMenuItem asChild key={subItem.title}>
-                          <a href={subItem.url} className="w-full cursor-pointer">
+                          <a
+                            href={subItem.url}
+                            className={`w-full cursor-pointer ${
+                              pathname === subItem.url ? 'bg-accent text-accent-foreground' : ''
+                            }`}
+                          >
                             {subItem.title}
                           </a>
                         </DropdownMenuItem>
@@ -88,12 +99,12 @@ export function NavMain({
             <Collapsible
               key={item.title}
               asChild
-              defaultOpen={item.isActive}
+              defaultOpen={isItemActive || item.isActive}
               className="group/collapsible"
             >
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={item.title}>
+                  <SidebarMenuButton tooltip={item.title} isActive={isItemActive}>
                     {item.icon && <item.icon aria-hidden="true" />}
                     <span>{item.title}</span>
                     <ChevronRight
@@ -106,7 +117,7 @@ export function NavMain({
                   <SidebarMenuSub>
                     {item.items?.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton asChild>
+                        <SidebarMenuSubButton asChild isActive={pathname === subItem.url}>
                           <a href={subItem.url}>
                             <span>{subItem.title}</span>
                           </a>
